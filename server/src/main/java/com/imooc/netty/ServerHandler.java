@@ -19,7 +19,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         String request = (String)msg;
         System.out.println("Server: " +request);
 
-        String response = "response from server：" + request + "$";
+        String response = "response from server：" + request + "#";
         ctx.writeAndFlush(Unpooled.copiedBuffer(response.getBytes()));
     }
 

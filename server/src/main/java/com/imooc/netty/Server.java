@@ -30,8 +30,10 @@ public class Server {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ByteBuf buf = Unpooled.copiedBuffer("$".getBytes());
-                        ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, buf));
+                        //ByteBuf buf = Unpooled.copiedBuffer("$".getBytes());
+                        //ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, buf));
+                        ByteBuf buf = Unpooled.copiedBuffer("#".getBytes());
+                        ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024,buf));
                         ch.pipeline().addLast(new StringDecoder());
                         ch.pipeline().addLast(new ServerHandler());
                     }
