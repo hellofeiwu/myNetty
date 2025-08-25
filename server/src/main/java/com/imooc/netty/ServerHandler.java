@@ -5,22 +5,29 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
+import java.io.FileOutputStream;
+
 public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.err.println("Server channel active ...");
     }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-//        ByteBuf buf = (ByteBuf) msg;
-//        byte[] requestBytes = new byte[buf.readableBytes()];
-//        buf.readBytes(requestBytes);
-//        String request = new String(requestBytes, "utf-8");
-//        System.err.println("Server: " + request);
-        String request = (String)msg;
-        System.out.println("Server: " +request);
 
-        String response = "response from server：" + request + "#";
-        ctx.writeAndFlush(Unpooled.copiedBuffer(response.getBytes()));
+        RequestData requestData = (RequestData) msg;
+        System.out.println(requestData.toString());
+
+        byte[] attachmentData = requestData.getAttachment();
+        String path = "/Users/feiwu/projects/java_training/myNetty/server/src/main/resources/bbb.png";
+        FileOutputStream fos = new FileOutputStream(path);
+        fos.write(attachmentData);
+        fos.close();
+
+        ResponseData responseData = new ResponseData();
+        responseData.setId(requestData.getId());
+        responseData.setMessage("got it from server");
+
+        ctx.writeAndFlush(responseData);
     }
 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

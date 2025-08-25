@@ -14,8 +14,11 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 public class Client {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
         EventLoopGroup workGroup = new NioEventLoopGroup();
 
         Bootstrap b = new Bootstrap();
@@ -27,20 +30,37 @@ public class Client {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ByteBuf buf = Unpooled.copiedBuffer("#".getBytes());
-                        ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, buf));
-                        ch.pipeline().addLast(new StringDecoder());
+                        ch.pipeline().addLast(MarshallingCodeCFactory.buildMarshallingDecoder());
+                        ch.pipeline().addLast(MarshallingCodeCFactory.buildMarshallingEncoder());
                         ch.pipeline().addLast(new ClientHandler());
                     }
                 });
 
         ChannelFuture cf = b.connect("127.0.0.1", 8765).syncUninterruptibly();
 
-//        for(int i = 1 ; i <=100 ; i ++){
-//            cf.channel().writeAndFlush(Unpooled.copiedBuffer(("msg " + i + "$").getBytes()));
-//        }
         for(int i =0; i<20; i++) {
-            cf.channel().writeAndFlush(Unpooled.copiedBuffer(("msg " + i + "#").getBytes()));
+            RequestData requestData = new RequestData();
+            requestData.setId(i);
+            requestData.setMessage("hello " + i);
+
+//            String path = System.getProperty("user.dir")
+//                    + File.separatorChar + "source" + File.separatorChar + "001.jpg";
+//            File file = new File(path);
+//            FileInputStream fis = new FileInputStream(file);
+//            byte[] data = new byte[fis.available()];
+//            fis.read(data);
+//            fis.close();
+//            rd.setAttachment(GzipUtils.gzip(data));
+//            channel.writeAndFlush(rd);
+
+            String path = "/Users/feiwu/projects/java_training/myNetty/client/src/main/resources/aaa.png";
+            File file = new File(path);
+            FileInputStream fis = new FileInputStream(file);
+            byte[] attachmentData = new byte[fis.available()];
+            fis.read(attachmentData);
+            fis.close();
+            requestData.setAttachment(attachmentData);
+            cf.channel().writeAndFlush(requestData);
         }
 
         cf.channel().closeFuture().sync();

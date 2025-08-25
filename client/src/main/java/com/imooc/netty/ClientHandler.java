@@ -18,9 +18,9 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 //
 //            String response = new String(requestBytes, "utf-8");
 
-            String response = (String)msg;
+            ResponseData responseData = (ResponseData)msg;
 
-            System.out.println("Client: "+ response);
+            System.out.println(responseData.toString());
         }finally {
             ReferenceCountUtil.release(msg);
         }
