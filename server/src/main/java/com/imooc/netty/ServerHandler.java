@@ -11,13 +11,13 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf buf = (ByteBuf) msg;
-        byte[] requestBytes = new byte[buf.readableBytes()];
-        buf.readBytes(requestBytes);
-        String request = new String(requestBytes, "utf-8");
-        System.err.println("Server: " + request);
-//        String request = (String)msg;
-//        System.out.println("Server: " +request);
+//        ByteBuf buf = (ByteBuf) msg;
+//        byte[] requestBytes = new byte[buf.readableBytes()];
+//        buf.readBytes(requestBytes);
+//        String request = new String(requestBytes, "utf-8");
+//        System.err.println("Server: " + request);
+        String request = (String)msg;
+        System.out.println("Server: " +request);
 
         //String responseBody = "response from server," + requestBody;
         ctx.writeAndFlush(Unpooled.copiedBuffer(request.getBytes()));

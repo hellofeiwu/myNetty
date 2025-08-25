@@ -12,13 +12,13 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try{
-            ByteBuf buf = (ByteBuf) msg;
-            byte[] requestBytes = new byte[buf.readableBytes()];
-            buf.readBytes(requestBytes);
+//            ByteBuf buf = (ByteBuf) msg;
+//            byte[] requestBytes = new byte[buf.readableBytes()];
+//            buf.readBytes(requestBytes);
+//
+//            String response = new String(requestBytes, "utf-8");
 
-            String response = new String(requestBytes, "utf-8");
-
-            //String response = (String)msg;
+            String response = (String)msg;
 
             System.out.println("Client: "+ response);
         }finally {
