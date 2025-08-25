@@ -19,8 +19,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         String request = (String)msg;
         System.out.println("Server: " +request);
 
-        //String responseBody = "response from server," + requestBody;
-        ctx.writeAndFlush(Unpooled.copiedBuffer(request.getBytes()));
+        String response = "response from server：" + request + "$";
+        ctx.writeAndFlush(Unpooled.copiedBuffer(response.getBytes()));
     }
 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
