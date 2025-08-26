@@ -9,6 +9,7 @@
         <module name="mySpringWork" />
         <module name="server" />
         <module name="client" />
+        <module name="mySpringBootWork" />
       </profile>
     </annotationProcessing>
   </component>

@@ -12,6 +12,7 @@
         <module>server</module>
         <module>client</module>
         <module>mySpringWork</module>
+        <module>mySpringBootWork</module>
     </modules>
 
     <properties>
